@@ -1,0 +1,9 @@
+setup:
+  config:
+    FOO: bar
+build:
+  docker:
+    web: Dockerfile
+# run:
+#   app: >
+#     bash -c "/opt/webapp/init.sh;"
