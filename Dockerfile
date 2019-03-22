@@ -23,7 +23,7 @@ CMD openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 \
 
 # Copy nginx.conf and replace its vars with env vars:  Heroku's PORT, REDIS_URL, FORWARD_TO_URL.
 COPY nginx.conf /etc/nginx/conf.d/default.conf
-CMD sed -i -e 's/PORT/'"$PORT"'/g' /etc/nginx/conf.d/default.conf
+CMD sed -i 's/PORT/'"$PORT"'/g' /etc/nginx/conf.d/default.conf
 
 # Break up REDIS_URL into components and replace them in nginx.conf.
 # See: https://stackoverflow.com/questions/6174220/parse-url-in-shell-script
@@ -39,8 +39,8 @@ CMD hostport=`echo $url | sed -e s,$auth@,,g | cut -d/ -f1`
 CMD host=`echo $hostport | grep : | cut -d: -f1`
 CMD port=`echo $hostport | grep : | cut -d: -f2`
 
-CMD sed -i -e 's/REDIS_AUTH/'"$auth"'/g' /etc/nginx/conf.d/default.conf
-CMD sed -i -e 's/REDIS_HOST/'"$host"'/g' /etc/nginx/conf.d/default.conf
-CMD sed -i -e 's/REDIS_PORT/'"$port"'/g' /etc/nginx/conf.d/default.conf
+CMD sed -i 's/REDIS_AUTH/'"$auth"'/g' /etc/nginx/conf.d/default.conf
+CMD sed -i 's/REDIS_HOST/'"$host"'/g' /etc/nginx/conf.d/default.conf
+CMD sed -i 's/REDIS_PORT/'"$port"'/g' /etc/nginx/conf.d/default.conf
 
-CMD sed -i -e 's/FORWARD_TO_URL/'"$FORWARD_TO_URL"'/g' /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'
+CMD sed -i 's/FORWARD_TO_URL/'"$FORWARD_TO_URL"'/g' /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'
