@@ -29,13 +29,13 @@ RUN sed -i -e 's/PORT/'"$PORT"'/g' /etc/nginx/conf.d/default.conf
 # See: https://stackoverflow.com/questions/6174220/parse-url-in-shell-script
 # Extract and remove the protocol
 RUN proto="`echo $REDIS_URL | grep '://' | sed 's,^\(.*://\).*,\1,g'`"
-RUN url=`echo $REDIS_URL | sed s,$proto,,g`
+RUN url=`echo $REDIS_URL | sed 's,'"$proto"',,g'`
 
 # Extract the user and password.
 RUN auth="`echo $url | grep @ | cut -d @ -f1`"
 
 # Extract the host and port.
-RUN hostport=`echo $url | sed s,$auth@,,g | cut -d/ -f1`
+RUN hostport=`echo $url | sed 's,'"$auth@"',,g' | cut -d/ -f1`
 RUN host=`echo $hostport | grep : | cut -d: -f1`
 RUN port=`echo $hostport | grep : | cut -d: -f2`
 
