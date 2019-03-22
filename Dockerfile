@@ -28,19 +28,14 @@ RUN sed -i -e 's/PORT/'"$PORT"'/g' /etc/nginx/conf.d/default.conf
 # Break up REDIS_URL into components and replace them in nginx.conf.
 # See: https://stackoverflow.com/questions/6174220/parse-url-in-shell-script
 # Extract and remove the protocol
-RUN proto="`echo $REDIS_URL | grep '://' | sed 's,^\(.*://\).*,\1,g'`"
-RUN url=`echo $REDIS_URL | sed 's,'"$proto"',,g'`
-
-# Extract the user and password.
-RUN auth="`echo $url | grep @ | cut -d @ -f1`"
-
-# Extract the host and port.
-RUN hostport=`echo $url | sed 's,'"$auth@"',,g' | cut -d/ -f1`
-RUN host=`echo $hostport | grep : | cut -d: -f1`
-RUN port=`echo $hostport | grep : | cut -d: -f2`
-
-RUN sed -i -e 's/REDIS_AUTH/'"$auth"'/g' /etc/nginx/conf.d/default.conf
-RUN sed -i -e 's/REDIS_HOST/'"$host"'/g' /etc/nginx/conf.d/default.conf
-RUN sed -i -e 's/REDIS_PORT/'"$port"'/g' /etc/nginx/conf.d/default.conf
+RUN proto="`echo $REDIS_URL | grep '://' | sed 's,^\(.*://\).*,\1,g'`" \
+  url=`echo $REDIS_URL | sed 's,'"$proto"',,g'` \
+  auth="`echo $url | grep @ | cut -d @ -f1`" \
+  hostport=`echo $url | sed 's,'"$auth@"',,g' | cut -d/ -f1` \
+  host=`echo $hostport | grep : | cut -d: -f1` \
+  port=`echo $hostport | grep : | cut -d: -f2` \
+  sed -i -e 's/REDIS_AUTH/'"$auth"'/g' /etc/nginx/conf.d/default.conf \
+  sed -i -e 's/REDIS_HOST/'"$host"'/g' /etc/nginx/conf.d/default.conf \
+  sed -i -e 's/REDIS_PORT/'"$port"'/g' /etc/nginx/conf.d/default.conf
 
 RUN sed -i -e 's/FORWARD_TO_URL/'"$FORWARD_TO_URL"'/g' /etc/nginx/conf.d/default.conf
