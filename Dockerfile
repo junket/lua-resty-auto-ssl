@@ -43,4 +43,4 @@ CMD sed -i -e 's/REDIS_AUTH/'"$auth"'/g' /etc/nginx/conf.d/default.conf
 CMD sed -i -e 's/REDIS_HOST/'"$host"'/g' /etc/nginx/conf.d/default.conf
 CMD sed -i -e 's/REDIS_PORT/'"$port"'/g' /etc/nginx/conf.d/default.conf
 
-CMD sed -i -e 's/FORWARD_TO_URL/'"$FORWARD_TO_URL"'/g' /etc/nginx/conf.d/default.conf
+CMD sed -i -e 's/FORWARD_TO_URL/'"$FORWARD_TO_URL"'/g' /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'
