@@ -15,8 +15,8 @@ WORKDIR /app
 COPY Makefile /app/Makefile
 RUN make install-test-deps-yum
 RUN make install-test-deps
-RUN make all
-RUN make install
+RUN luarocks install lua-resty-auto-ssl
+# RUN mkdir /etc/resty-auto-ssl
 
 COPY . /app
 
