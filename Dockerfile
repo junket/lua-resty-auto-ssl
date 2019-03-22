@@ -39,8 +39,8 @@ CMD hostport=`echo $url | sed -e s,$auth@,,g | cut -d/ -f1`
 CMD host=`echo $hostport | grep : | cut -d: -f1`
 CMD port=`echo $hostport | grep : | cut -d: -f2`
 
-CMD sed -i -e 's/$REDIS_AUTH/'"$auth"'/g' /etc/nginx/conf.d/default.conf
-CMD sed -i -e 's/$REDIS_HOST/'"$host"'/g' /etc/nginx/conf.d/default.conf
-CMD sed -i -e 's/$REDIS_PORT/'"$port"'/g' /etc/nginx/conf.d/default.conf
+CMD sed -i -e 's/$auth/'"$REDIS_AUTH"'/g' /etc/nginx/conf.d/default.conf
+CMD sed -i -e 's/$host/'"$REDIS_HOST"'/g' /etc/nginx/conf.d/default.conf
+CMD sed -i -e 's/$port/'"$REDIS_PORT"'/g' /etc/nginx/conf.d/default.conf
 
 CMD sed -i -e 's/$FORWARD_TO_URL/'"$FORWARD_TO_URL"'/g' /etc/nginx/conf.d/default.conf
