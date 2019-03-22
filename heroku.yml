@@ -1,9 +1,23 @@
+# Resources to provision on app creation
 setup:
-  config:
-    FOO: bar
+  addons:
+    - plan: heroku-redis
+      as: REDIS
 build:
   docker:
     web: Dockerfile
-# run:
-#   app: >
-#     bash -c "/opt/webapp/init.sh;"
+# Run a command on each release 
+# release:
+#   command:
+#     - ./deployment-tasks.sh
+#   # Use the worker image to execute the release command
+#   image: worker
+run:
+  web: nginx -g 'daemon off;'
+# web: bundle exec puma -C config/puma.rb
+# worker: python myworker.py
+# asset-syncer:
+#   command:
+#     - python asset-syncer.py
+#     # Use the worker image with this process type
+#     image: worker
