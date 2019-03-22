@@ -21,9 +21,12 @@ RUN openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 \
   -keyout /etc/ssl/resty-auto-ssl-fallback.key \
   -out /etc/ssl/resty-auto-ssl-fallback.crt
 
+# RUN nginx_conf=/usr/local/openresty/nginx/conf/nginx.conf
+# RUN nginx_conf="/etc/nginx/conf.d/default.conf"
+
 # Copy nginx.conf and replace its vars with env vars:  Heroku's PORT, REDIS_URL, FORWARD_TO_URL.
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-RUN sed -i -e 's/PORT/'"$PORT"'/g' /etc/nginx/conf.d/default.conf
+COPY nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
+RUN sed -i -e 's/ENV_PORT/'"$PORT"'/g' /usr/local/openresty/nginx/conf/nginx.conf
 
 # Break up REDIS_URL into components and replace them in nginx.conf.
 # See: https://stackoverflow.com/questions/6174220/parse-url-in-shell-script
@@ -34,8 +37,10 @@ RUN url="`echo $REDIS_URL | sed s,'redis://',,g`" && \
   host="`echo $hostport | grep : | cut -d: -f1`" && \
   port="`echo $hostport | grep : | cut -d: -f2`"
 
-RUN sed -i -e 's/REDIS_AUTH/'"$auth"'/g' /etc/nginx/conf.d/default.conf
-RUN sed -i -e 's/REDIS_HOST/'"$host"'/g' /etc/nginx/conf.d/default.conf
-RUN sed -i -e 's/REDIS_PORT/'"$port"'/g' /etc/nginx/conf.d/default.conf
+RUN sed -i -e 's/REDIS_AUTH/'"$auth"'/g' /usr/local/openresty/nginx/conf/nginx.conf
+RUN sed -i -e 's/REDIS_HOST/'"$host"'/g' /usr/local/openresty/nginx/conf/nginx.conf
+RUN sed -i -e 's/REDIS_PORT/'"$port"'/g' /usr/local/openresty/nginx/conf/nginx.conf
 
-RUN sed -i -e 's/FORWARD_TO_URL/'"$FORWARD_TO_URL"'/g' /etc/nginx/conf.d/default.conf
+RUN sed -i -e 's/FORWARD_TO_URL/'"$FORWARD_TO_URL"'/g' /usr/local/openresty/nginx/conf/nginx.conf
+
+RUN cat /usr/local/openresty/nginx/conf/nginx.conf
