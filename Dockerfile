@@ -50,3 +50,4 @@ RUN url="`echo $REDIS_URL | sed s,'redis://',,g`" && \
 # Diagnostics on local:
 RUN cat /usr/local/openresty/nginx/conf/nginx.conf
 RUN nginx -t
+CMD bin/start_nginx
